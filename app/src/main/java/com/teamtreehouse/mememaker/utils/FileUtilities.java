@@ -7,6 +7,8 @@ import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 
+import com.teamtreehouse.mememaker.MemeMakerApplicationSettings;
+
 import java.io.File;
 import java.io.FileFilter;
 import java.io.FileNotFoundException;
@@ -50,7 +52,8 @@ public class FileUtilities
 
     public static File getFileDirectory(Context context)
     {
-        String storageType = StorageType.PRIVATE_EXTERNAL;
+        MemeMakerApplicationSettings settings = new MemeMakerApplicationSettings(context);
+        String storageType = settings.getStoragePreference();
         if(storageType == StorageType.INTERNAL)
         {
             return context.getFilesDir();
