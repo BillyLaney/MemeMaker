@@ -11,6 +11,7 @@ import com.teamtreehouse.mememaker.utils.StorageType;
  */
 public class MemeMakerApplicationSettings
 {
+    public static final String KEY_STORAGE_PREFERENCE = "Storage";
     SharedPreferences mSharedPreferences;
 
     public MemeMakerApplicationSettings(Context context)
@@ -20,13 +21,13 @@ public class MemeMakerApplicationSettings
 
     public String getStoragePreference()
     {
-        return mSharedPreferences.getString("Storage", StorageType.INTERNAL);
+        return mSharedPreferences.getString(KEY_STORAGE_PREFERENCE, StorageType.INTERNAL);
     }
 
     public void setStoragePreference(String storageType)
     {
         mSharedPreferences.edit()
-                .putString("Storage", storageType)
+                .putString(KEY_STORAGE_PREFERENCE, storageType)
                 .commit();
     }
 }
