@@ -23,11 +23,14 @@ import android.widget.Toast;
 
 import com.teamtreehouse.mememaker.R;
 import com.teamtreehouse.mememaker.adapters.MemeItemListAdapter;
+import com.teamtreehouse.mememaker.database.MemeDatasource;
 import com.teamtreehouse.mememaker.models.Meme;
 import com.teamtreehouse.mememaker.models.MemeAnnotation;
 import com.teamtreehouse.mememaker.ui.activities.CreateMemeActivity;
 import com.teamtreehouse.mememaker.ui.activities.MemeSettingsActivity;
 import com.teamtreehouse.mememaker.utils.FileUtilities;
+
+import java.util.ArrayList;
 
 
 public class MemeItemFragment extends ListFragment {
@@ -40,6 +43,15 @@ public class MemeItemFragment extends ListFragment {
         super.onCreate(savedInstanceState);
     }
 
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+
+        MemeDatasource dataSource = new MemeDatasource(this.getActivity());
+        ArrayList<Meme> memes = dataSource.read();
+        setListAdapter(new MemeItemListAdapter(getActivity(), memes));
+    }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
