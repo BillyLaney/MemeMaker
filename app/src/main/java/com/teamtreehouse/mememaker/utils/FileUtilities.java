@@ -23,11 +23,14 @@ import java.io.OutputStream;
  */
 public class FileUtilities {
 
+    private static final String TAG = FileUtilities.class.getSimpleName();
+
     public static void saveAssetImage(Context context, String assetName) {
         File fileDirectory = context.getFilesDir();
-        File fileToWrite = new File(fileDirectory + assetName);
+        File fileToWrite = new File(fileDirectory + "/" + assetName);
 
-
+        Log.i(TAG, fileDirectory.toString());
+        Log.i(TAG, fileToWrite.toString());
         AssetManager assetManager = context.getAssets();
         try
         {
@@ -47,6 +50,27 @@ public class FileUtilities {
             e.printStackTrace();
         }
 
+    }
+
+    public static File[] listFiles(Context context)
+    {
+        File fileDirectory = context.getFilesDir();
+        Log.i(TAG, fileDirectory.toString());
+        File[] filteredFiles = fileDirectory.listFiles(new FileFilter()
+        {
+            @Override
+            public boolean accept(File file)
+            {
+                if(file.getAbsolutePath().contains(".jpg"))
+                {
+                    return true;
+                }
+
+                return false;
+            }
+        });
+
+        return filteredFiles;
     }
 
     private static void copyFile(InputStream in, OutputStream out) throws IOException {
