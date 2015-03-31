@@ -11,6 +11,7 @@ import com.teamtreehouse.mememaker.models.Meme;
 import com.teamtreehouse.mememaker.models.MemeAnnotation;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by Evan Anger on 8/17/14.
@@ -93,7 +94,7 @@ public class MemeDatasource
                 ,null//selection args
                 ,null//group by
                 ,null//having
-                ,null);//order
+                ,MemeSQLiteHelper.COLUMN_MEME_CREATE_DATE + " DESC");//order
 
         ArrayList<Meme> memes = new ArrayList<Meme>();
         if(cursor.moveToFirst())
@@ -180,6 +181,7 @@ public class MemeDatasource
         ContentValues memeValues = new ContentValues();
         memeValues.put(MemeSQLiteHelper.COLUMN_MEME_NAME, meme.getName());
         memeValues.put(MemeSQLiteHelper.COLUMN_MEME_ASSET, meme.getAssetLocation());
+        memeValues.put(MemeSQLiteHelper.COLUMN_MEME_CREATE_DATE, new Date().getTime());
 
         long memeID = database.insert(MemeSQLiteHelper.MEMES_TABLE, null, memeValues);
 

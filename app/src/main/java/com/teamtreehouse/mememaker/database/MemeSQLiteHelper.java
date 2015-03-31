@@ -2,6 +2,7 @@ package com.teamtreehouse.mememaker.database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteDatabaseLockedException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
@@ -12,16 +13,18 @@ public class MemeSQLiteHelper extends SQLiteOpenHelper
 {
 
     private static final String DB_NAME = "memes.db";
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 2;
     //Meme Table functionality
     public static final String MEMES_TABLE = "MEMES";
     public static final String COLUMN_MEME_ASSET = "ASSET";
     public static final String COLUMN_MEME_NAME = "NAME";
+    public static final String COLUMN_MEME_CREATE_DATE = "CREATE_DATE";
     private static String CREATE_MEMES =
             "CREATE TABLE " + MEMES_TABLE + "("
                     + BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     COLUMN_MEME_ASSET + " TEXT," +
-                    COLUMN_MEME_NAME + " TEXT)";
+                    COLUMN_MEME_NAME + " TEXT," +
+                    COLUMN_MEME_CREATE_DATE + ")";
 
     //Meme Table Annotations functionality
     public static final String ANNOTATIONS_TABLE = "ANNOTATIONS";
@@ -53,9 +56,18 @@ public class MemeSQLiteHelper extends SQLiteOpenHelper
         sqLiteDatabase.execSQL(CREATE_ANNOTATIONS);
     }
 
-    @Override
-    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i2)
-    {
+    private static final String ALTER_ADD_CREATE_DATE = "ALTER TABLE " + MEMES_TABLE +
+            " ADD COLUMN " + COLUMN_MEME_CREATE_DATE + " INTEGER";
 
+    @Override
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion)
+    {
+        switch(oldVersion)
+        {
+            case 1:
+                //update stuff
+                sqLiteDatabase.execSQL(ALTER_ADD_CREATE_DATE);
+
+        }
     }
 }
