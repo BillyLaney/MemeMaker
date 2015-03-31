@@ -48,6 +48,11 @@ public class MemeItemFragment extends ListFragment {
     {
         super.onResume();
 
+        refreshMemes();
+    }
+
+    private void refreshMemes()
+    {
         MemeDatasource dataSource = new MemeDatasource(this.getActivity());
         ArrayList<Meme> memes = dataSource.read();
         setListAdapter(new MemeItemListAdapter(getActivity(), memes));
@@ -79,8 +84,11 @@ public class MemeItemFragment extends ListFragment {
                                 new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
-                                        Toast.makeText(MemeItemFragment.this.getActivity(), "Should delete", Toast.LENGTH_LONG).show();
-                                        mMemeItemListAdapter.notifyDataSetChanged();
+                                        Toast.makeText(MemeItemFragment.this.getActivity(), "Deleted", Toast.LENGTH_LONG).show();
+                                        MemeDatasource datasource = new MemeDatasource(MemeItemFragment.this.getActivity());
+                                        datasource.delete(memeId);
+                                        refreshMemes();
+                                        //mMemeItemListAdapter.notifyDataSetChanged();
                                         mMenu.findItem(R.id.share_action).setVisible(true);
                                         mMenu.findItem(R.id.edit_action).setVisible(true);
 
